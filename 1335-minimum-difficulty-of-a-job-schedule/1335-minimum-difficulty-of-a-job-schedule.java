@@ -29,7 +29,7 @@ class Solution {
     max = MIN
     //need to give atleast a job a day
     //so cant do all jobs on curr day if more days are there
-    for k = i; k<n-d-1; k++ {
+    for k = i; k<n-d+1; k++ {
         //take [i:k] numbers on curr day
         //get max of this -> max
         ans = (k+1, [], d - 1)//ans for rest array
