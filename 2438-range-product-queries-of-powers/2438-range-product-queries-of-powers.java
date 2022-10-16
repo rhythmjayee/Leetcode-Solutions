@@ -1,25 +1,27 @@
 class Solution {
-     public int[] productQueries(int n, int[][] qu) {
-        String str = Integer.toBinaryString(n); // convert n into binary string to get  minimum number of powers of  2
-        ArrayList<Long> list = new ArrayList<>();
-        long pow = 1;
-        for (int i = str.length() - 1; i >= 0; i--) { // now loop on binary string
-            if (str.charAt(i) == '1') list.add(pow); //if i'th bit is set add its power to our list
-            pow = pow * 2;
+    public int[] productQueries(int n, int[][] queries) {
+        List<Integer> ls = new ArrayList<>();
+        long mod = (long)(1e9+7);
+        int id = 0;
+        for(int i = 0; i<32; i++){
+            if((n & (1 << i)) != 0)
+                ls.add((1 << i));
         }
-        long mod = (long) 1e9 + 7;
-
-        int ans[] = new int[qu.length];
-
-        for (int i = 0; i < qu.length; i++) {
-            long mul = 1;
-            for (int j = qu[i][0]; j <= qu[i][1]; j++) { //compute answer for each query
-                mul = (mul * list.get(j)) % mod;
+        // long[] p = new long[ls.size()+1];
+        // p[0] = 1L;
+        // for(int i = 1; i<=ls.size(); i++){
+        //     p[i] = (ls.get(i - 1) * p[i - 1]);
+        // }
+        int[] ans = new int[queries.length];
+        for(int i = 0 ; i<queries.length; i++){
+            int l = queries[i][0];
+            int r = queries[i][1];
+            long m = 1L;
+            for(int j = l; j<=r; j++){
+                m = (m * ls.get(j))%mod;
             }
-
-            ans[i] = (int) mul;
+            ans[i] = (int)m;
         }
-
         return ans;
     }
 }
