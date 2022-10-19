@@ -1,62 +1,73 @@
 class Solution {
-    static class TrieNode {
+
+    // Ternary search trie node
+    static class TstNode {
         String word;
-        TrieNode[] next;
-        TrieNode() {
-            next = new TrieNode[26];
-        }
+        char ch;
+        TstNode left, mid, right;
     }
+
+    // Add word to tst
+    private TstNode addWord(TstNode node, String word) {
+        return addWord(node, word, 0);
+    }
+
+    private TstNode addWord(TstNode node, String word, int i) {
+        char ch = word.charAt(i);
+        if (node == null) {
+            node = new TstNode();
+            node.ch = ch;
+        }
+        if (ch < node.ch) {
+            node.left = addWord(node.left, word, i);
+        } else if (ch > node.ch) {
+            node.right = addWord(node.right, word, i);
+        } else if (i < word.length() - 1) {
+            node.mid = addWord(node.mid, word, i + 1);
+        } else {
+            node.word = word;
+        }
+        return node;
+    }
+
+    // Get words from tst node to result
+    private void getWords(TstNode node, int k, List<String> result) {
+        if (node == null || k == result.size()) {
+            return;
+        }
+        // Search left children first since they have lower alphabetic orders
+        getWords(node.left, k, result);
+        if (node.word != null) {
+            result.add(node.word);
+        }
+        getWords(node.mid, k, result);
+        getWords(node.right, k, result);
+    }
+
     public List<String> topKFrequent(String[] words, int k) {
-        Map<String, Integer> freq = new HashMap<>();
-        int maxFreq = 0;
-        for(String s : words) {
-            freq.put(s, freq.getOrDefault(s, 0) + 1);
-            maxFreq = Math.max(maxFreq, freq.get(s));
+        List<String> result = new ArrayList<>();
+        if (words == null || words.length == 0) {
+            return result;
         }
-        
-        //bucket sort -> Add same freq strings under same Trie
-        TrieNode count[] = new TrieNode[maxFreq + 1];
-        for(String s : freq.keySet()) {
-            int f = freq.get(s);
-            if(count[f] == null) {
-                count[f] = new TrieNode();
-            }
-            addWord(count[f], s);
+
+        // Get frequency of each word
+        HashMap<String, Integer> freqMap = new HashMap<>();
+        for (String word : words) {
+            freqMap.put(word, freqMap.getOrDefault(word, 0) + 1);
         }
-        
-        List<String> ans = new ArrayList<>();
-        //get Words with maxfreq first till size k
-        //as we will be getting characters in lexicographical order
-        //we will get strings in lexicographical order
-        for(int i = maxFreq; i > 0 && ans.size() < k; i--) {
-            if(count[i] != null) {
-                getWord(count[i], k, ans);
+
+        // Build buckets
+        TstNode[] buckets = new TstNode[words.length + 1];
+        for (Map.Entry<String, Integer> entry : freqMap.entrySet()) {
+            int freq = entry.getValue();
+            buckets[freq] = addWord(buckets[freq], entry.getKey());
+        }
+
+        for (int freq = buckets.length - 1; freq > 0 && result.size() < k; freq--) {
+            if (buckets[freq] != null) {
+                getWords(buckets[freq], k, result);
             }
         }
-        
-        return ans;
-    }
-    private void addWord(TrieNode root, String s) {
-        int n = s.length();
-        for(int i = 0; i<n; i++) {
-            char c = s.charAt(i);
-            if(root.next[c - 'a'] == null) {
-                root.next[c - 'a'] = new TrieNode();
-            }
-            root = root.next[c - 'a'];
-        }
-        root.word = s;
-    } 
-    
-    private void getWord(TrieNode root, int k, List<String> ans) {
-        if(root.word != null) {
-            ans.add(root.word);
-        }
-        
-        for(int i = 0; i<26 && ans.size() < k; i++) {
-            if(root.next[i] != null) {
-                getWord(root.next[i], k, ans);
-            }
-        }
+        return result;
     }
 }
