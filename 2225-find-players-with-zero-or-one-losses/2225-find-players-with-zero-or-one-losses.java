@@ -1,30 +1,30 @@
 class Solution {
     public List<List<Integer>> findWinners(int[][] matches) {
-        Map<Integer, Integer> win = new HashMap<>();
-        Map<Integer, Integer> lose = new HashMap<>();
-        
-        for(int[] m : matches) {
-            win.put(m[0], win.getOrDefault(m[0] , 0) + 1);
-            lose.put(m[1], lose.getOrDefault(m[1] , 0) + 1);
-        }
-        List<List<Integer>> ans = new ArrayList<>();
-        List<Integer> ww = new ArrayList<>();
-        List<Integer> ll = new ArrayList<>();
-        for(int w : win.keySet()) {
-            if(!lose.containsKey(w)) {
-                ww.add(w);
+        int[] lossesCount = new int[100001];
+        Arrays.fill(lossesCount, -1);
+
+        for (int[] match : matches) {
+            int winner = match[0], loser = match[1];
+            if (lossesCount[winner] == -1) {
+                lossesCount[winner] = 0;
+            }
+            if (lossesCount[loser] == -1) {
+                lossesCount[loser] = 1;
+            } else {
+                lossesCount[loser]++;
             }
         }
-        for(int l : lose.keySet()) {
-            if(lose.containsKey(l) && lose.get(l) == 1) {
-                ll.add(l);
+
+        List<List<Integer>> answer =
+            Arrays.asList(new ArrayList<>(), new ArrayList<>());
+        for (int i = 1; i < 100001; ++i) {
+            if (lossesCount[i] == 0) {
+                answer.get(0).add(i);
+            } else if (lossesCount[i] == 1) {
+                answer.get(1).add(i);
             }
         }
-        Collections.sort(ww);
-        Collections.sort(ll);
-        ans.add(ww);
-        ans.add(ll);
-        
-        return ans; 
+
+        return answer;
     }
 }
