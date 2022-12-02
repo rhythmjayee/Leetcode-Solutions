@@ -18,16 +18,12 @@ class Solution {
         for(int x : f1.values()) {
             f11.put(x, f11.getOrDefault(x, 0) + 1);
         }
-        Map<Integer, Integer> f22 = new HashMap<>();
         for(int x : f2.values()) {
-            f22.put(x, f22.getOrDefault(x, 0) + 1);
-            if(f11.getOrDefault(x, 0) < f22.get(x)) return false;
+             if(!f11.containsKey(x)) return false;
+            f11.put(x, f11.get(x) - 1);
         }
-        for(int x : f11.keySet()) {
-            if(f11.get(x) != f22.get(x)) return false;
-        }
-        for(int x : f1.keySet()) {
-            if(!f2.containsKey(x)) return false;
+        for(int x : f11.values()) {
+            if(x != 0) return false;
         }
         return true;
     }
