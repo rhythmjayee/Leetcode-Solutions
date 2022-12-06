@@ -27,13 +27,12 @@ class Solution {
                 od.next = head;
                 od = head;
             }  
-            head = next;
-            od.next = null;
-            ev.next = null;
+            head = next;            
             count++;
         }
         
         od.next = even.next;
+        ev.next = null;
         return odd.next;
     }
 }
