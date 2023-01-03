@@ -5,17 +5,8 @@ class Solution {
         int count = 0;
         
         for(int i = 0; i<m; i++) {
-            Integer[] f = new Integer[26];
-            for(int j = 0; j<n; j++) {
-                char c = strs[j].charAt(i);
-                f[c - 'a'] = j;
-            }
-            
-            int prev = -1;
-            for(int j = 0; j<26; j++) {
-                if(f[j] == null) continue;
-                if(prev == -1 || prev < f[j]) prev = f[j];
-                else {
+            for(int j = 1; j<n; j++) {
+                if (strs[j].charAt(i) < strs[j - 1].charAt(i)) {
                     count++;
                     break;
                 }
