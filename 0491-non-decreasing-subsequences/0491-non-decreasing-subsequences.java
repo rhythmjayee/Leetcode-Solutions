@@ -1,25 +1,27 @@
 class Solution {
+    private List<List<Integer>> ans = new ArrayList<>();
     public List<List<Integer>> findSubsequences(int[] nums) {
-        List<List<Integer>> ans = new ArrayList<>();
-        helper(nums, 0, ans, new ArrayList<>());
+        helper(nums, 0, new ArrayList<>());
         return ans;
     }
-    private void helper(int[] nums, int newStartIndex,  List<List<Integer>> ans, List<Integer> ls) {
-        //add all the seq if size > 1
-        if(ls.size() > 1) {
-            ans.add(new ArrayList<>(ls));
+    private void helper(int[] nums, int index, List<Integer> ls) {
+        if (index > nums.length - 1) {
+            if (ls.size() > 1) ans.add(new ArrayList<>(ls));
+            return;
+        } 
+        
+        if (ls.isEmpty() || nums[index] >= ls.get(ls.size() - 1)) {
+            ls.add(nums[index]);
+            helper(nums, index + 1, ls);
+            ls.remove(ls.size() - 1);
         }
         
-        //To avoid using same numbers at same recursion call
-        Set<Integer> visitedNow = new HashSet<>();
-        for(int k = newStartIndex; k<nums.length; k++) {
-            if(visitedNow.contains(nums[k])) continue;
-            else if(ls.size() == 0 || ls.get(ls.size() - 1) <= nums[k]) {   
-                visitedNow.add(nums[k]);
-                ls.add(nums[k]);
-                helper(nums, k + 1, ans, ls);
-                ls.remove(ls.size() - 1);
-            }
+        // repeated value, so don't need to drill down.
+        if (index > 0 
+            && ls.size() > 0 
+            && nums[index] == ls.get(ls.size() - 1)) {
+            return;
         }
+        helper(nums, index + 1, ls);
     }
 }
