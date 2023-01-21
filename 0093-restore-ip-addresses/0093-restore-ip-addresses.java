@@ -17,7 +17,6 @@ class Solution {
             int val = Integer.valueOf(st);
             
             if(st.length() == 2 && val < 10) return;
-            else if(st.length() == 3 && val < 100) return;
             else if(val > 255) return;
             
             sbb.append(st);
