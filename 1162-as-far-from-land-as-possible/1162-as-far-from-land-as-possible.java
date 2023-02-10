@@ -10,7 +10,7 @@ class Solution {
         for(int i = 0; i<n; i++) {
             for(int j = 0; j < m; j++) {
                 if(grid[i][j] == 1) {
-                    q.add(new int[]{i, j, i , j});
+                    q.add(new int[]{i, j, 0});
                 }
             }
         }
@@ -26,9 +26,8 @@ class Solution {
                 if(x < 0 || y < 0 || x == n || y == m) continue;
                 if(v[x][y] == 1 || grid[x][y] == 1) continue;
                 
-                int dist = Math.abs(x - rm[2]) + Math.abs(y - rm[3]);
-                max = Math.max(dist, max);
-                q.add(new int[]{x, y, rm[2], rm[3]});
+                max = Math.max(max, rm[2] + 1);
+                q.add(new int[]{x, y, rm[2] + 1});
                 v[x][y] = 1;
             }
         }
