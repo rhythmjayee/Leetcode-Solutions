@@ -1,47 +1,36 @@
 class Solution {
     public int shipWithinDays(int[] weights, int days) {
-        int n = weights.length;
-        
-        int max = Integer.MIN_VALUE , sum = 0;
-        
-        for(int i = 0; i<n; i++){
-            max = Math.max(max,weights[i]);
-            sum += weights[i];
+        int s = 0;
+        int mx = 0;
+        for(int x : weights) {
+            s += x;
+            mx = Math.max(mx, x);
         }
-        
-        int start = max;//min cap of ship should be the max of weights
-        int end = sum;//max cap will the the sum of weights
-        
-        while(start < end){
-            int shipCap = start + ((end - start)>>1);
-            
-            int minDaysToShipWithCurrCap = getDays(weights,shipCap);
-            
-            if(minDaysToShipWithCurrCap > days){
-                start = shipCap + 1;
-            }else{
-                end = shipCap;
+        int i = mx;
+        int j = s;
+        while(i < j) {
+            int potentialCap = i + ((j - i) >> 1);
+            if(isPossibleToShip(potentialCap, days, weights)) {
+                j = potentialCap;
+            }else {
+                i = potentialCap + 1;
             }
-            
         }
-        
-        return start;
+        return j;
     }
-    
-    public int getDays(int[] a,int cap){
-        int days = 1;
-        int n = a.length;
-        int w = cap;
-        for(int i=0; i<n; ){
-             if(w >= a[i]){
-                w -= a[i];
-                i++;
-            }else{
-                days++;
-                w = cap;
+    private boolean isPossibleToShip(int cap, int days, int[] w) {
+        int daysReq = 1;
+        int currW = w[0];
+        for(int i = 1; i<w.length; i++) {
+            int x = w[i];
+            if(x > cap) return false;
+            else if(currW + x <= cap) {
+                currW += x;
+            }else {
+                daysReq += 1;
+                currW = x;
             }
         }
-        
-        return days;
+        return daysReq <= days;
     }
 }
