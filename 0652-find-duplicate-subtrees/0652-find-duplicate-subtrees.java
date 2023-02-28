@@ -14,16 +14,11 @@
  * }
  */
 class Solution {
-    Map<String, List<TreeNode>> map = new HashMap<>();
+    Map<String, Integer> map = new HashMap<>();
+    List<TreeNode> ls = new ArrayList<>();
     public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
-        List<TreeNode> res = new ArrayList<>();
         preorder(root);
-        for(String k : map.keySet()) {
-            if(map.get(k).size() > 1) {
-                res.add(map.get(k).get(0));
-            }
-        }
-        return res;
+        return ls;
     }
     public StringBuilder preorder(TreeNode root) {
         if(root == null) return new StringBuilder("#");
@@ -34,10 +29,11 @@ class Solution {
         nodePreOrder.append(l);
         nodePreOrder.append(r);
         String res = nodePreOrder.toString();
-        // System.out.println(res);
-        map.putIfAbsent(res, new ArrayList<>());
-        map.get(res).add(root);
         
+        map.put(res, map.getOrDefault(res, 0) + 1);
+        if(map.get(res) == 2) {
+            ls.add(root);
+        }        
         return nodePreOrder;
     }
 }
