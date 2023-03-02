@@ -1,28 +1,19 @@
 class Solution {
     public int compress(char[] chars) {
-        StringBuilder s = new StringBuilder();
-        int n = chars.length;
-        int i = 0;//for traversing the chars for compression
-        int j = 0;//for adding compressed string chrs
-        
-        while(i < n) {
-            char c = chars[i];
-            int count = 0;
-            while(i < n && c == chars[i]) {
-                count++;
-                i++;
+        int i = 0, res = 0;
+        while (i < chars.length) {
+            int groupLength = 1;
+            while (i + groupLength < chars.length && chars[i + groupLength] == chars[i]) {
+                groupLength++;
             }
-            if(count == 1) {
-                s.append(c);
-            }else {
-                s.append(c);
-                s.append(count);
+            chars[res++] = chars[i];
+            if (groupLength > 1) {
+                for (char c : Integer.toString(groupLength).toCharArray()) {
+                    chars[res++] = c;
+                }
             }
-            String st = s.toString();
-            while(j < st.length()) {
-                chars[j] = st.charAt(j++);
-            }
+            i += groupLength;
         }
-        return j;
+        return res;
     }
 }
