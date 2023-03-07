@@ -7,8 +7,12 @@ class Solution {
         return t >= trips;
     }
     public long minimumTime(int[] time, int totalTrips) {
-        long i = 0;
-        long j = (long)1e14;
+        int max_time = 0;
+        for (int t : time) {
+            max_time = Math.max(max_time, t);
+        }
+        long i = 1;
+        long j = (long) max_time * totalTrips;
         while(i < j) {
             long timeNeeded = i + ((j - i) >> 1);
             if(canDo(time, totalTrips, timeNeeded)) {
