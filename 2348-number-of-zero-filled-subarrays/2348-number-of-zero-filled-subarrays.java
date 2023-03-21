@@ -2,14 +2,15 @@ class Solution {
     public long zeroFilledSubarray(int[] nums) {
         long count = 0;
         int n = nums.length;
-        int prev = -1;
-        for(int i = 0; i<n; i++) {
-            if(nums[i] == 0 && prev == -1) {
-                count += 1;
-                prev = i;
-            }else if(nums[i] == 0) {
-                count += (i - prev + 1);
-            }else prev = -1;
+        int start = -1;
+        //Number of sub arrays not formed till ith index = end - start + 1
+        for (int end = 0; end < n; end++) {
+            if (nums[end] == 0 && start == -1) {//start of subarray
+                count += 1;//subarray with single element
+                start = end;
+            }else if (nums[end] == 0) {//add no.of subarrays not counted & ending at end index
+                count += (end - start + 1);
+            }else start = -1;
         }
         return count;
     }
