@@ -1,39 +1,33 @@
 class Solution {
-    public int minScore(int n, int[][] roads) {
-        List<int[]>[] g = new ArrayList[n + 1];
-        for(int i = 1; i<=n; i++) {
-            g[i] = new ArrayList<>();
-        }
-        for(int x[] : roads) {
-            int u = x[0];
-            int v = x[1];
-            int w = x[2];
-            g[u].add(new int[]{v, w});
-            g[v].add(new int[]{u, w});
-        }
-        
-        LinkedList<int[]> q = new LinkedList<>();
-        q.add(new int[]{1, 0});
-        int[] d = new int[n + 1];
-        Arrays.fill(d, Integer.MAX_VALUE);
-        
-        while(!q.isEmpty()) {
-            int[] r = q.poll();
-            int v = r[0];
-            int w = r[1];
-            for(int[] x : g[v]) {
-                if(x[1] < d[x[0]]) {
-                    d[x[0]] = x[1];
-                    q.add(x);
+    public int bfs(int n, Map<Integer, List<List<Integer>>> adj) {
+        boolean[] visit = new boolean[n + 1];
+        Queue<Integer> q = new LinkedList<>();
+        int answer = Integer.MAX_VALUE;
+
+        q.offer(1);
+        visit[1] = true;
+
+        while (!q.isEmpty()) {
+            int node = q.poll();
+            for (List<Integer> edge : adj.get(node)) {
+                answer = Math.min(answer, edge.get(1));
+                if (!visit[edge.get(0)]) {
+                    visit[edge.get(0)] = true;
+                    q.offer(edge.get(0));
                 }
             }
         }
-        //As we can go to the min path and come back to same path
-        //which may be connected to nth node
-        int min = Integer.MAX_VALUE;
-        for(int x : d) {
-            min = Math.min(min, x);
+        return answer;
+    }
+
+    public int minScore(int n, int[][] roads) {
+        Map<Integer, List<List<Integer>>> adj = new HashMap<>();
+        for (int[] road : roads) {
+            adj.computeIfAbsent(road[0], k -> new ArrayList<>()).add(
+                    Arrays.asList(road[1], road[2]));
+            adj.computeIfAbsent(road[1], k -> new ArrayList<>()).add(
+                    Arrays.asList(road[0], road[2]));
         }
-        return min;
+        return bfs(n, adj);
     }
 }
