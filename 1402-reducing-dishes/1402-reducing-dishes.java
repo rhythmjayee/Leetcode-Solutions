@@ -1,16 +1,15 @@
 class Solution {
     public int maxSatisfaction(int[] satisfaction) {
-        int n = satisfaction.length;
         Arrays.sort(satisfaction);
-        return top(satisfaction, 0, 0, new Integer[n + 1][n + 1]);
-    }
-    public int top(int[] sat, int i, int count, Integer[][] dp) {
-        if(i == sat.length) return 0;
-        else if(dp[i][count + 1] != null) return dp[i][count + 1];
-        
-        int takeDish = top(sat, i + 1, count + 1, dp) + (count + 1)*sat[i];
-        int notTakeDish = top(sat, i + 1, count, dp);
-        
-        return dp[i][count + 1] = Math.max(takeDish, notTakeDish);
+
+        int maxSatisfaction = 0;
+        int suffixSum = 0;
+        for (int i = satisfaction.length - 1; i >= 0 && suffixSum + satisfaction[i] > 0; i--) {
+            // Total satisfaction with all dishes so far.
+            suffixSum += satisfaction[i];
+            // Adding one instance of previous dishes as we add one more dish on the left.
+            maxSatisfaction +=  suffixSum;
+        }
+        return maxSatisfaction;
     }
 }
