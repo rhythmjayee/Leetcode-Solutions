@@ -2,13 +2,14 @@
  * @param {Function} fn
  */
 function memoize(fn) {
-    let map = new Map()
+    let answer = {};
     return function(...args) {
-        let st = String(fn)+[...args]
-        if(map.has(st)) return map.get(st) 
-        let v = fn(...args)
-        map.set(st, v)
-        return v;
+        const argsString = args.join(".");
+        const cacheValue = answer[argsString]
+        if(cacheValue != undefined) {
+            return cacheValue;
+        }
+        return answer[argsString] = fn(...args);
     }
 }
 
