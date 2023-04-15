@@ -3,20 +3,22 @@
  * @param {Function} classFunction
  * @return {boolean}
  */
-var checkIfInstanceOf = function(obj, classFunction) {
-    while(obj!=null)
-    {
-        if(obj.constructor === classFunction)
-        {
-            return true;
-        }
+var checkIfInstanceOf = function isInstanceOf(obj, classOrSuperclass) {
+  if (obj == null || obj == undefined || typeof classOrSuperclass !== 'function') {
+    return false
+  }
 
-        obj = Object.getPrototypeOf(obj);
-
+  let currentPrototype = Object.getPrototypeOf(obj);
+  while (currentPrototype !== null) {
+    if (currentPrototype.constructor === classOrSuperclass) {
+      return true;
     }
+    currentPrototype = Object.getPrototypeOf(currentPrototype);
+  }
 
-    return false;
-};
+  return false;
+}
+
 
 /**
  * checkIfInstanceOf(new Date(), Date); // true
