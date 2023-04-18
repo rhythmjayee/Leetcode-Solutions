@@ -9,11 +9,11 @@ class Solution {
         while(i < n || j < m) {
             if(i < n) {
                 char a = word1.charAt(i++);
-                 sb.append(a+"");
+                 sb.append(a);
             }
             if(j < m) {
                 char b = word2.charAt(j++);
-                sb.append(b+"");
+                sb.append(b);
             }
         }
         return sb.toString();
