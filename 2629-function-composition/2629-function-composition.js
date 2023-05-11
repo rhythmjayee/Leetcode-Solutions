@@ -3,13 +3,11 @@
  * @return {Function}
  */
 var compose = function(functions) {
-    if(functions.length === 0) return function(x) {
-        return x
-    }
+    if(functions.length === 0) return (x) => x;
     for(let i = functions.length - 2; i>=0; i--) {
         let f_1 = functions[i + 1]
         let f = functions[i]
-        let nf = function(x) {
+        let nf = (x) => {
             x = f_1(x)
             return f(x)
         }
