@@ -1,9 +1,9 @@
-var curry = function (fn) {
-  return function curried(...args) {
-    if (args.length >= fn.length) {
-      return fn.apply(this, args);
-    }
+var curry = function(fn) {
+   return function curried(...args) {
+      if(args.length >= fn.length) {
+         return fn(...args);
+      }
 
-    return curried.bind(this, ...args);
-  };
+      return (...nextArgs) => curried(...args, ...nextArgs);
+   };
 };
