@@ -10,10 +10,14 @@ class Solution {
             if(set.contains(x)) dup = 1;
             set.add(x);
         }
+        
         int gap = max - min;
+        
+        if(gap % (arr.length - 1) != 0) return false;
+        
         int d = gap / (arr.length - 1);
-        if(Math.ceil((double)gap / (arr.length - 1)) != Math.floor((double)gap / (arr.length - 1))) return false;
-        else if(dup == 1 & d != 0) return false;
+        
+        if(dup == 1 & d != 0) return false;
         for(int x : arr) {
             if(!(set.contains(x - d) || set.contains(x + d))) return false;
         }
