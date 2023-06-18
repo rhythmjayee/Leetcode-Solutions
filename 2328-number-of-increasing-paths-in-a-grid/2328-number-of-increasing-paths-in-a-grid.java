@@ -11,12 +11,8 @@ class Solution {
         long count = 0;
         for(int i = 0; i<g.length; i++) {
             for(int j = 0; j<g[0].length; j++) {
-                if(dp[i][j] == 0) {
-                    long res = dfs(g, i, j, dp);
-                    count = (count + res + 1)%mod;
-                }else {
-                    count = (count + dp[i][j] + 1)%mod;
-                }
+                long res = dfs(g, i, j, dp);
+                count = (count + res + 1)%mod;
             }
         }
         return (int)count;
