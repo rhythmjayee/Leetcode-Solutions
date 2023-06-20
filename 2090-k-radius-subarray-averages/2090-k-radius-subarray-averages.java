@@ -1,35 +1,27 @@
 class Solution {
     public int[] getAverages(int[] nums, int k) {
-        // When a single element is considered then its averafge will be the number itself only.
-        if (k == 0) {
-            return nums;
-        }
-
         int n = nums.length;
-        int[] averages = new int[n];
-        Arrays.fill(averages, -1);
-
-        // Any index will not have 'k' elements in it's left and right.
-        if (2 * k + 1 > n) {
-            return averages;
+        long[] sumLeftToRight = new long[n + 1];
+        long[] sumRightToLeft = new long[n + 1];
+        int[] ans = new int[n];
+        
+        Arrays.fill(ans, -1);
+        if(n < k*2 + 1) return ans;
+        
+        for(int i = 1; i<=n; i++){
+            sumLeftToRight[i] += sumLeftToRight[i - 1]  + nums[i - 1];
         }
-
-        // Generate 'prefix' array for 'nums'.
-        // 'prefix[i + 1]' will be sum of all elements of 'nums' from index '0' to 'i'.
-        long[] prefix = new long[n + 1];
-        for (int i = 0; i < n; ++i) {
-            prefix[i + 1] = prefix[i] + nums[i];
+        for(int i = n - 1; i >= 0; i--){
+            sumRightToLeft[i] += sumRightToLeft[i + 1]  + nums[i];
         }
-
-        // We iterate only on those indices which have atleast 'k' elements in their left and right.
-        // i.e. indices from 'k' to 'n - k'
-        for (int i = k; i < (n - k); ++i) {
-            int leftBound = i - k, rightBound = i + k;
-            long subArraySum = prefix[rightBound + 1] - prefix[leftBound];
-            int average = (int) (subArraySum / (2 * k + 1));
-            averages[i] = average;
+        
+        for(int i = k; i<n-k; i++) {
+            long l = sumLeftToRight[i + 1] - sumLeftToRight[i - k];
+            long r = sumRightToLeft[i + 1] - sumRightToLeft[i + 1 + k];
+            int avg = (int)((l + r) / (2*k + 1));
+            ans[i] = avg;
         }
-
-        return averages;
+        return ans;
+        
     }
 }
