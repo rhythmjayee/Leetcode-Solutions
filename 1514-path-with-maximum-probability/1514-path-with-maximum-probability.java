@@ -19,9 +19,7 @@ class Solution {
             g.get(e[1]).add(new Edge(e[0],pb));
         }
         double pb[] = new double[n];
-        int[] vis = new int[n];
         pb[start] = 1.0;
-        vis[start] = 1;
         
         PriorityQueue<Edge> pq = new PriorityQueue<>((a,b)->{
             return Double.compare(b.p,a.p);
@@ -34,11 +32,10 @@ class Solution {
             int u = rm.v;
             double p = rm.p;
             
-            vis[u] = 1;
             if(u == end) return p;
             
             for(Edge v: g.get(u)){
-                if(vis[v.v] == 0 && pb[v.v] <= pb[u] * v.p){
+                if(pb[v.v] < pb[u] * v.p){
                     pb[v.v] = pb[u] * v.p;
                     pq.add(new Edge(v.v,pb[v.v]));
                 }
