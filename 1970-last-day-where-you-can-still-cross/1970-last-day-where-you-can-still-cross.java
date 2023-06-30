@@ -43,10 +43,10 @@ class Solution {
         for (int i = cells.length - 1; i >= 0; i--) {
             int r = cells[i][0] - 1, c = cells[i][1] - 1;
             grid[r][c] = 1;
-            int index1 = r * col + c + 1;
+            int index1 = r * col + c;
             for (int[] d : directions) {
                 int newR = r + d[0], newC = c + d[1];
-                int index2 = newR * col + newC + 1;
+                int index2 = newR * col + newC;
                 if (newR >= 0 && newR < row && newC >= 0 && newC < col && grid[newR][newC] == 1) {
                     dsu.union(index1, index2);
                 }
