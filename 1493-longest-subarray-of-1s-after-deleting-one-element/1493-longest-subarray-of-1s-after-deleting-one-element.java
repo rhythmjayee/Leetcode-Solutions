@@ -7,12 +7,10 @@ class Solution {
         int lastConvertedZro = 0;
         for(int end = 0; end < n; end++) {
             int x = nums[end];
-            if(x == 1 || zero == 0) {
-                if(x != 1 && zero == 0) {
-                    zero = 1;
-                    lastConvertedZro = end;
-                }
-            } else {
+            if(x == 0 && zero == 0) {
+                zero = 1;
+                lastConvertedZro = end;
+            } else if(x == 0){
                 start = lastConvertedZro + 1;
                 lastConvertedZro = end;
             }
