@@ -1,33 +1,23 @@
 class Solution {
-    public int maxTOrFWeCanGet(String str, int k, char chr) {
-        int start = 0;
-        int n = str.length();
-        int max = 0;
-        char otherChar = chr == 'T' ? 'F' : 'T';
-        int c1 = 0;
-        int c2 = 0;
-        for(int end = 0; end < n; end++) {
-            char cur = str.charAt(end);
-            if(cur == chr) {
-                c1++;
-            } else {
-                c2++;
-            }
-            while(start <= end && c2 - k > 0) {
-                if(str.charAt(start) == otherChar) {
-                    c2--;
-                }else {
-                    c1--;
-                }
-                start++;
-            }
-            max = Math.max(max, c1 + c2);            
-        }
-        return max;
-    }
     public int maxConsecutiveAnswers(String answerKey, int k) {
-        int maxT = maxTOrFWeCanGet(answerKey, k, 'T');
-        int maxF = maxTOrFWeCanGet(answerKey, k, 'F');
-        return Math.max(maxT, maxF);
+        int maxSize = k;
+        Map<Character, Integer> count = new HashMap<>();
+        for (int i = 0; i < k; i++) {
+            count.put(answerKey.charAt(i), count.getOrDefault(answerKey.charAt(i), 0) + 1);
+        }
+        
+        int left = 0;
+        for (int right = k; right < answerKey.length(); right++) {
+            count.put(answerKey.charAt(right), count.getOrDefault(answerKey.charAt(right), 0) + 1);
+            
+            while (Math.min(count.getOrDefault('T', 0), count.getOrDefault('F', 0)) > k) {
+                count.put(answerKey.charAt(left), count.get(answerKey.charAt(left)) - 1);
+                left++;
+            }
+            
+            maxSize = Math.max(maxSize, right - left + 1);
+        }
+                    
+        return maxSize;
     }
 }
