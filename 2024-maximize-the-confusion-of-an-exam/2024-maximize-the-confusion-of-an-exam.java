@@ -13,9 +13,6 @@ class Solution {
             } else {
                 c2++;
             }
-            if(c2 - k <= 0) {
-                max = Math.max(max, c1 + c2);
-            }
             while(start <= end && c2 - k > 0) {
                 if(str.charAt(start) == otherChar) {
                     c2--;
@@ -24,6 +21,7 @@ class Solution {
                 }
                 start++;
             }
+            max = Math.max(max, c1 + c2);            
         }
         return max;
     }
