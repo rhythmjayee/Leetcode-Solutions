@@ -2,10 +2,6 @@ class Solution {
     public int[] asteroidCollision(int[] asteroids) {
         Deque<Integer> sk = new LinkedList<>();
         for(int x : asteroids) {
-            if(sk.isEmpty() || x > 0) {
-                sk.addLast(x);
-                continue;
-            }
             boolean isDestroyed = false;
             while(!sk.isEmpty() && sk.getLast() > 0 && x < 0) {
                 int prev = sk.getLast();
