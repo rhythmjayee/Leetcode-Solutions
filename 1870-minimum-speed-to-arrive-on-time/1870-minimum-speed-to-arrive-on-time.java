@@ -2,7 +2,7 @@ class Solution {
     public int minSpeedOnTime(int[] dist, double hours) {
         int ans = -1;
         int i = 1;
-        int j = (int)(1e9);
+        int j = (int)(1e7);
         while(i <= j) {
             int md = i + ((j - i) >> 1);
             double totalTimeNeeded = TryTravelInTime(dist, md);
