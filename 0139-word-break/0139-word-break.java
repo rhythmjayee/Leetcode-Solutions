@@ -12,13 +12,12 @@ class Solution {
         if(i == s.length()) return true;
         else if(dp[i] != null) return dp[i];
         
-        boolean canBreak = false;
         for(int j = i; j < s.length(); j++) {
             String ns = s.substring(i, j + 1);
             if(set.contains(ns)) {
-                canBreak |= dfs(j + 1, s);
+                if(dfs(j + 1, s)) return dp[i] = true;
             }
         }
-        return dp[i] = canBreak;
+        return dp[i] = false;
     }
 }
