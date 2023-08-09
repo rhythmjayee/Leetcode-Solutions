@@ -5,7 +5,6 @@ class Calculator {
    */
   constructor(value) {
     this.a = Number(value)
-    this.err = null
   }
 
   /** 
@@ -41,7 +40,7 @@ class Calculator {
    */
   divide(value) {
     if(Number(value) == 0) {
-        this.err = new Error("Division by zero is not allowed")
+        throw "Division by zero is not allowed"
     }
     this.a /= Number(value)
       return this
@@ -60,7 +59,6 @@ class Calculator {
    * @return {number}
    */
   getResult() {
-    if(this.err !== null) return this.err.message
     return this.a
   }
 }
