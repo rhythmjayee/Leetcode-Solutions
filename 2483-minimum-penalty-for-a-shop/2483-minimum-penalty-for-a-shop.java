@@ -1,34 +1,28 @@
 class Solution {
     public int bestClosingTime(String customers) {
-        int n = customers.length();
-        int[] open = new int[n + 1];
-        int[] close = new int[n + 1];
-        int min = Integer.MAX_VALUE;
-        int idx = -1;
-        
-        for(int i = 1; i <= n; i++) {
-            open[i] = open[i - 1];
-            //calc no. of customer dont come till ith hour
-            //and shop was open
-            if(customers.charAt(i - 1) == 'N') open[i]++;
-        }
-        for(int i = n - 1; i >= 0; i--) {
-            close[i] = close[i + 1];
-            //calc no. of customer come till ith hour
-            //and shop was closed
-            if(customers.charAt(i) == 'Y') close[i]++;
-        }
-        
-        for(int i = 0; i<=n; i++) {
-            int los = open[i] +  (i < n ? close[i + 1] : 0);
-            //if shop is closed at ith, check if any customer came at ith
-            if(i < n && customers.charAt(i) == 'Y') los++;
+        // Start with closing at hour 0 and assume the current penalty is 0.
+        int minPenalty = 0, curPenalty = 0;
+        int earliestHour = 0;
+
+        for (int i = 0; i < customers.length(); i++) {
+            char ch = customers.charAt(i);
             
-            if(min > los) {
-                min = los;
-                idx = i;
+            // If status in hour i is 'Y', moving it to open hours decrement
+            // penalty by 1. Otherwise, moving 'N' to open hours increment
+            // penatly by 1.
+            if (ch == 'Y') {
+                curPenalty--;
+            } else {
+                curPenalty++;
+            }
+
+            // Update earliestHour if a smaller penatly is encountered.
+            if (curPenalty < minPenalty) {
+                earliestHour = i + 1;
+                minPenalty = curPenalty;
             }
         }
-        return idx;
+
+        return earliestHour;
     }
 }
