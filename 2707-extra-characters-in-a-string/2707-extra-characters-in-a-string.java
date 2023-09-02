@@ -11,14 +11,12 @@ class Solution {
         if(i == s.length()) return 0;
         else if(dp[i] != null) return dp[i];
         
-        int min = s.length();
+        int min = dfs(i + 1, s, set) + 1;//leftover character
         for(int k = i + 1; k <= s.length(); k++) {
             String sub = s.substring(i, k);
             int res = dfs(k, s, set);
             if(set.contains(sub)) {
                 min = Math.min(min, res);
-            } else {
-                min = Math.min(min, res + k - i);
             }
         }
         return dp[i] = min;
