@@ -8,7 +8,7 @@ class Solution {
             for(int j = 0; j < nums.length; j++) {
                 if(i - nums[j] >= 0) {
                     dp[i] += dp[i - nums[j]];
-                }
+                } else break;
             }
         }
         return dp[target];
