@@ -1,4 +1,19 @@
 class Solution {
+    private int numOnes(int[] row) {
+        int lo = 0;
+        int hi = row.length;
+        
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            
+            if (row[mid] == 1)
+                lo = mid + 1;
+            else
+                hi = mid;
+        }
+        
+        return lo;
+    }
     public int[] kWeakestRows(int[][] mat, int k) {
         PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> {
             if(a[0] == b[0]) return b[1] - a[1];
@@ -6,10 +21,7 @@ class Solution {
         });
         
         for(int i = 0; i < mat.length; i++) {
-            int count = 0;
-            for(int j = 0; j < mat[0].length && mat[i][j] == 1; j++) {
-                count++;
-            }
+            int count = numOnes(mat[i]);//BS to find the no. of 1s in row
             if(pq.size() < k) pq.add(new int[]{count, i});
             else {
                 int[] rm = pq.peek();
@@ -20,10 +32,8 @@ class Solution {
             }
         }
         int[] ans = new int[k];
-        int idx = 0;
         while(!pq.isEmpty()) {
-            ans[k - idx - 1] = pq.poll()[1];
-            idx++;
+            ans[--k] = pq.poll()[1];
         }
         return ans;
     }
