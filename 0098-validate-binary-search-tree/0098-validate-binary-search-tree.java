@@ -15,22 +15,27 @@
  */
 class Solution {
     public boolean isValidBST(TreeNode root) {
-        Deque<TreeNode> sk = new LinkedList<>();
-        
-        //inorder of BST -> sorted order
-        TreeNode curr = root;
         TreeNode prev = null;
-        while(curr != null || !sk.isEmpty()) {
-            while(curr != null) {
-                sk.addLast(curr);
-                curr = curr.left;
+        TreeNode curr = root;
+        
+        while(curr != null) {
+            TreeNode left = curr.left;
+            TreeNode next = left;
+            if(next != null) {
+                while(next.right != null && next.right != curr) {
+                    next = next.right;
+                }
+                if(next.right == null) {
+                    next.right = curr;
+                    curr = left;
+                    continue;
+                } else {
+                    next.right = null;
+                }
             }
-            TreeNode top = sk.removeLast();
-            if(prev != null && top.val <= prev.val) return false;
-            else {
-                prev = top;
-            }
-            curr = top.right;
+            if(prev != null && prev.val >= curr.val) return false;
+            prev = curr;
+            curr = curr.right;
         }
         return true;
     }
