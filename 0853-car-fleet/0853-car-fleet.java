@@ -8,14 +8,15 @@ class Solution {
         }
         //sort based on position, faster car behind slower car form a fleet
         Arrays.sort(time, (a, b) -> Double.compare(a[1], b[1]));
-        Deque<Double> sk = new LinkedList<>();
-        //[6, 3, 7, 1, 1]
-        for(double[] x : time) {
-            while(!sk.isEmpty() && sk.getLast() <= x[0]) {
-                sk.removeLast();
+        //[12, 3, 7, 1, 1]
+        int count = 0;
+        Double cur = 0.0;
+        for(int i = n - 1; i>=0; i--) {
+            if(time[i][0] > cur) {
+                cur = time[i][0];
+                count++;
             }
-            sk.addLast(x[0]);
         }
-        return sk.size();
+        return count;
     }
 }
