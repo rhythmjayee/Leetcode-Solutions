@@ -1,13 +1,13 @@
 class Solution {
     public int maxChunksToSorted(int[] arr) {
-        Deque<Integer> sk = new LinkedList<>();
-        for(int x : arr) {
-            int max = x;
-            while(!sk.isEmpty() && sk.getLast() > x) {
-                max = Math.max(max, sk.removeLast());
-            }
-            sk.addLast(max);
+        int max = 0;
+        int count = 0;
+        for(int i = 0; i < arr.length; i++) {
+            int x = arr[i];
+            max = Math.max(max, x);
+            if(max == i) count++;
+            //if max is same as the original position in sorted arr then can be chuncked
         }
-        return sk.size();
+        return count;
     }
 }
