@@ -1,10 +1,5 @@
 class Solution {
     public int getWinner(int[] arr, int k) {
-        int maxElement = arr[0];
-        for (int i = 1; i < arr.length; i++) {
-            maxElement = Math.max(maxElement, arr[i]);
-        }
-        
         int curr = arr[0];
         int winstreak = 0;
         
@@ -17,13 +12,12 @@ class Solution {
                 curr = opponent;
                 winstreak = 1;
             }
-            //element which wins k consecutive rounds or
-            //we get curr as maxElement, which will win every round
-            if (winstreak == k || curr == maxElement) {
+            //element which wins k consecutive rounds
+            if (winstreak == k) {
                 return curr;
             }
         }
-        
-        return -1;
+        //after loop finish, curr will store max element
+        return curr;
     }
 }
