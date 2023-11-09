@@ -1,19 +1,19 @@
 class Solution {
     public int countHomogenous(String s) {
-        int mod = (int)(1e9 + 7);
-        long count = 0;
-        int n = s.length();
-        int i = 0;
-        while(i < n) {
-            int j = i;
-            char c = s.charAt(j);
-            while(j < n && c == s.charAt(j)) {
-                j++;
+        int ans = 0;
+        int currStreak = 0;
+        int MOD = (int) 1e9 + 7;
+        
+        for (int i = 0; i < s.length(); i++) {
+            if (i == 0 || s.charAt(i) == s.charAt(i - 1)) {
+                currStreak++;
+            } else {
+                currStreak = 1;
             }
-            long substrings = ((((long)(j - i) * (long)(j - i + 1))% mod) >> 1)% mod;
-            count = (count + substrings)%mod;
-            i = j;
+            
+            ans = (ans + currStreak) % MOD;
         }
-        return (int)(count % mod);
+        
+        return ans;
     }
 }
