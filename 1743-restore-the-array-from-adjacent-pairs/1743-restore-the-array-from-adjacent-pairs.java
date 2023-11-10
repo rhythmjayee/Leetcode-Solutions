@@ -1,30 +1,42 @@
 class Solution {
+    Map<Integer, List<Integer>> graph = new HashMap();
+    
     public int[] restoreArray(int[][] adjacentPairs) {
-        int n = adjacentPairs.length + 1;
-        Map<Integer, Set<Integer>> map = new HashMap<>();
-        int[] ans = new int[n];
-        Integer front = null;
-        Integer last = null;
-        for(int[] x : adjacentPairs) {
-            map.putIfAbsent(x[0], new HashSet<>());
-            map.putIfAbsent(x[1], new HashSet<>());
-            map.get(x[0]).add(x[1]);
-            map.get(x[1]).add(x[0]);
+        for (int[] edge : adjacentPairs) {
+            int x = edge[0];
+            int y = edge[1];
+            
+            if (!graph.containsKey(x)) {
+                graph.put(x, new ArrayList());
+            }
+            
+            if (!graph.containsKey(y)) {
+                graph.put(y, new ArrayList());
+            }
+            
+            graph.get(x).add(y);
+            graph.get(y).add(x);
         }
-        for(int key : map.keySet()) {
-            if(front == null && map.get(key).size() == 1) front = key;
-            else if(last == null && map.get(key).size() == 1) last = key;
+        
+        int root = 0;
+        for (int num : graph.keySet()) {
+            if (graph.get(num).size() == 1) {
+                root = num;
+                break;
+            }
         }
-        ans[0] = front;
-        ans[n - 1] = last;
-        // System.out.println(front +" "+last);
-        for(int i = 1; i < n - 1; i++) {
-            int x = map.get(ans[i - 1]).iterator().next();
-            ans[i] = x;
-            // System.out.println(ans[i-1] +" "+x );
-            // System.out.println(map.get(x) );
-            map.get(x).remove(ans[i - 1]);
-        }
+        
+        int[] ans = new int[graph.size()];
+        dfs(root, Integer.MAX_VALUE, ans, 0);
         return ans;
+    }
+    
+    private void dfs(int node, int prev, int[] ans, int i) {
+        ans[i] = node;
+        for (int neighbor : graph.get(node)) {
+            if (neighbor != prev) {
+                dfs(neighbor, node, ans, i + 1);
+            }
+        }
     }
 }
