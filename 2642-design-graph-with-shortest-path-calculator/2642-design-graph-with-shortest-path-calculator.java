@@ -1,48 +1,41 @@
 class Graph {
-    List<List<Pair<Integer, Integer>>> adjList;
+    private int[][] adjMatrix;
+
     public Graph(int n, int[][] edges) {
-        adjList = new ArrayList<>();
-        for (int i = 0; i < n; i++)
-            adjList.add(new ArrayList<>());
-        for (int[] e : edges)
-            adjList.get(e[0]).add(new Pair<>(e[1], e[2]));
-    }
-
-    public void addEdge(int[] edge) {
-        adjList.get(edge[0]).add(new Pair<>(edge[1], edge[2]));
-    }
-
-    public int shortestPath(int node1, int node2) {
-        int n = adjList.size();
-        var pq = new PriorityQueue<List<Integer>>(Comparator.comparingInt(list -> list.get(0)));
-        int[] costForNode = new int[n];
-        Arrays.fill(costForNode, Integer.MAX_VALUE);
-        costForNode[node1] = 0;
-        pq.offer(Arrays.asList(0, node1));
-
-        while (!pq.isEmpty()) {
-            var curr = pq.poll();
-            int currCost = curr.get(0);
-            int currNode = curr.get(1);
-
-            if (currCost > costForNode[currNode]) {
-                continue;
-            }
-            if (currNode == node2) {
-                return currCost;
-            }
-            for (var neighbor : adjList.get(currNode)) {
-                int neighborNode = neighbor.getKey();
-                int cost = neighbor.getValue();
-                int newCost = currCost + cost;
-
-                if (newCost < costForNode[neighborNode]) {
-                    costForNode[neighborNode] = newCost;
-                    pq.offer(Arrays.asList(newCost, neighborNode));
+        adjMatrix = new int[n][n];
+        Arrays.stream(adjMatrix).forEach(row -> Arrays.fill(row, (int)1e9));
+        for (int[] e : edges) {
+            adjMatrix[e[0]][e[1]] = e[2];
+        }
+        for (int i = 0; i < n; i++) {
+            adjMatrix[i][i] = 0;
+        }
+        for (int i = 0; i < n; i++) {//intermidate node
+            for (int j = 0; j < n; j++) {//start node
+                for (int k = 0; k < n; k++) {//end node
+                    adjMatrix[j][k] = Math.min(adjMatrix[j][k], 
+                                               adjMatrix[j][i] +
+                                               adjMatrix[i][k]);
                 }
             }
         }
+    }
 
-        return -1;
+    public void addEdge(int[] edge) {
+        int n = adjMatrix.length;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                adjMatrix[i][j] = Math.min(adjMatrix[i][j],
+                                           adjMatrix[i][edge[0]] +
+                                           adjMatrix[edge[1]][j] +
+                                           edge[2]);
+            }
+        }
+    }
+
+    public int shortestPath(int node1, int node2) {
+        if (adjMatrix[node1][node2] == (int)1e9)
+            return -1;
+        return adjMatrix[node1][node2];
     }
 }
