@@ -22,12 +22,17 @@ class Solution {
                 continue;
             }
             //get all unique char seen
-            Set<Character> between = new HashSet();
+           int[] seen = new int[26];
+            int count = 0;
             for (int j = first[i] + 1; j < last[i]; j++) {
-                between.add(s.charAt(j));
+                int idx = s.charAt(j) - 'a';
+                if(seen[idx] == 0) {
+                    seen[idx]++;
+                    count++;
+                }
             }
             
-            ans += between.size();
+            ans += count;
         }
         
         return ans;
