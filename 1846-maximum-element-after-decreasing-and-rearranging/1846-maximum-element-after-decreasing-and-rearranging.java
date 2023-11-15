@@ -1,14 +1,17 @@
 class Solution {
     public int maximumElementAfterDecrementingAndRearranging(int[] arr) {
-        Arrays.sort(arr);
-        int max = 1;
-        arr[0] = 1;
-        for(int i = 1; i<arr.length; i++) {
-            if(Math.abs(arr[i] - arr[i - 1]) > 1) {
-                arr[i] = arr[i - 1] + 1;
-            }
-            max = Math.max(max, arr[i]);
+        int n = arr.length;
+        int[] counts = new int[n + 1];
+        
+        for (int num : arr) {
+            counts[Math.min(num, n)]++;
         }
-        return max;
+        
+        int ans = 1;
+        for (int num = 2; num <= n; num++) {
+            ans = Math.min(ans + counts[num], num);
+        }
+        
+        return ans;
     }
 }
