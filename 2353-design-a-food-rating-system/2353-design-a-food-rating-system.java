@@ -7,12 +7,9 @@ class FoodRatings {
             foodCuisineMap.put(foods[i], cuisines[i]);
             foodRatings.put(foods[i], ratings[i]);
             cuisineFoodItems.putIfAbsent(cuisines[i], new TreeSet<>((a, b) -> {
-                int compareByRating = Integer.compare(a.getKey(), b.getKey());
-                    if (compareByRating == 0) {
-                        // If ratings are equal, compare by food name (in ascending order).
-                        return a.getValue().compareTo(b.getValue());
-                    }
-                    return compareByRating;
+                if(a.getKey().intValue() == b.getKey().intValue()) //important Integer bug
+                    return a.getValue().compareTo(b.getValue());
+                return a.getKey() - b.getKey();
             }));
             cuisineFoodItems.get(cuisines[i]).add(new Pair<>(-1*ratings[i], foods[i]));
         }
