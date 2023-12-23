@@ -1,11 +1,12 @@
 class Solution {
     public boolean isPathCrossing(String path) {
-        Set<String> set = new HashSet<>();
+        Set<Integer> set = new HashSet<>();
         //NSEW
+        int prime = 127;
         int[][] dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
         int x = 0;
         int y = 0;
-        set.add((x+"-"+y));
+        set.add((x*prime + y));
         for(char c : path.toCharArray()) {
             switch(c) {
                 case 'N':
@@ -27,7 +28,7 @@ class Solution {
                 default:
                     break;
             }
-            String st = x+"-"+y;
+            int st = x*prime + y;
             if(set.contains(st)) return true;
             set.add(st);
         }
