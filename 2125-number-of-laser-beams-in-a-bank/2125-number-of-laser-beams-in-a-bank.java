@@ -10,10 +10,11 @@ class Solution {
                 char c = bank[i].charAt(j);
                 if(c == '1') securityDevices++;
             }
-            if(prev > 0)
+            if(securityDevices > 0) {
                 beans += prev * securityDevices;
-            if(securityDevices > 0)
                 prev = securityDevices;
+            }
+                
         }
         return beans;
     }
