@@ -14,16 +14,21 @@
  * }
  */
 class Solution {
-    public int getSum(TreeNode root, boolean isLeft) {
-        if(root == null) return 0;
-        if(isLeft && root.left == null && root.right == null) return root.val;
-        
-        int l = getSum(root.left, true);
-        int r = getSum(root.right, false);
-        
-        return l + r;
+    public int getSum(TreeNode root) {
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        int sum = 0;
+        while(!q.isEmpty()) {
+            TreeNode tn = q.poll();
+            if(tn.left != null && tn.left.left == null && tn.left.right == null) {
+                sum += tn.left.val;
+            }
+            if(tn.left != null) q.add(tn.left);
+            if(tn.right != null) q.add(tn.right);
+        }
+        return sum;
     }
     public int sumOfLeftLeaves(TreeNode root) {
-        return getSum(root, false);
+        return getSum(root);
     }
 }
