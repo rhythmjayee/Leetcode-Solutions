@@ -21,8 +21,8 @@ class Solution {
                 for(int i = 0; i < 4; i++){
                     int num = ch[i] - '0';
                     if(num != 0){
-                        int up = num == 9? 0 : num + 1;
-                        int dn = num == 0? 9 : num - 1;
+                        int up = (num + 1) % 10;
+                        int dn = num - 1;
                         ch[i] = (char)(up + '0');
                         q.offer(String.valueOf(ch));
                         ch[i] = (char)(dn + '0');
