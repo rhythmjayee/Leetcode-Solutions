@@ -11,7 +11,7 @@ class Solution {
             i++;
             j--;
         }
-        if(j <= i && (n & 1) != 0) return true;
+        if(j < i) return true;
         int i2 = i + 1;
         int j2 = j;
         while(i2 <= j2) {
